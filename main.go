@@ -1,9 +1,9 @@
 package main
 
 import (
-	"go_challenge/cli"
+	"fmt"
 )
 
 func main() {
-	cli.RunCli()
+	fmt.Println("Refactor First Challenge")
 }

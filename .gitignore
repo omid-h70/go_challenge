@@ -1,0 +1,7 @@
+### remove cache data
+## win git rm . -r --cached
+## other git rm  -r --cached
+.idea/
+.env
+tmp*
+/vendor/
