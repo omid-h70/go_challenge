@@ -8,9 +8,12 @@ tidy:
 	go mod tidy
 	go mod vendor
 
-rebuild:
+clean-build:
+	@echo "Clean and Build"
 	docker-compose down -v
-	docker-compose up
+	docker-compose build --no-cache
+	docker-compose up --force-recreate
+	@echo "Clean Build Done!"
 
 test:
 	go test -v ./...
