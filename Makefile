@@ -8,7 +8,8 @@ tidy:
 	go mod tidy
 	go mod vendor
 
-up:
+rebuild:
+	docker-compose down -v
 	docker-compose up
 
 test:
