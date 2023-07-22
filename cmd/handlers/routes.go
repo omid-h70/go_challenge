@@ -3,8 +3,7 @@ package handlers
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/gorilla/mux"
-	"go_challenge/rest/models"
+	"go_challenge/cmd/models"
 	"log"
 	"net/http"
 	"strings"

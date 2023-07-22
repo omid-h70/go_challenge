@@ -13,6 +13,24 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
+# Service Containers To Run with container-job
+    services:
+      #Label used to access service container
+      postgres:
+        #docker image
+        iamge: postgres:14.1-alpine
+        env:
+          POSTGRES_USER: root
+          POSTGRE_PASSWORD: postgres
+          POSTGRES_DB: test_db
+        # set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_ready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5s
+        ports:
+          5432:5432
     steps:
     - uses: actions/checkout@v3
 
@@ -23,6 +41,14 @@ jobs:
 
     - name: Build
       run: go build -v ./...
+
+#     Make Migration steps
+#    - name: Install Project Migrations
+#      run: |
+#      https://github.com/golang-migrate/migrate/releases/download/v4.12.2/migrate.linux-amd64.tar.gz | tar xvz
+#      sudo mv migrate.linux-amd64 /usr/bin/migrate
+#    - name: Run Migration
+#      run: make migrations
 
     - name: Test
  #     run: go test -v ./...
