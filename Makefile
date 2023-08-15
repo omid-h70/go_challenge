@@ -20,6 +20,10 @@ migrate-up:
 migrate-down:
 	migrate -path db/migration --database ${DB_CONN_STRING} -verbose down
 
+#Windows Specific Command
+sqlc:
+	docker run --rm -v "%cd%:/src" -w /src kjconroy/sqlc generate
+
 ping:
 	@echo "Yo, i'm alive"
 
