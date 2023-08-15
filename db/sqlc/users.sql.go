@@ -3,7 +3,7 @@
 //   sqlc v1.19.1
 // source: users.sql
 
-package go_challenge
+package db
 
 import (
 	"context"

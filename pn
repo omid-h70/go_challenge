@@ -1,0 +1,37 @@
+###############################################
+go bin paths C:\Users\ohosseini\go\bin
+
+## disable go mod vendor
+## first enable internet connection
+## 1.relative path is not supported
+## 2.you may need update package and get mockgen in your package as well
+## 3. first param is package path to interface , second one is interface name
+mockgen -destination=db/mock/store.go go_challenge/db/sqlc Store
+
+###############################################
+# windows sqlc stuff
+
+engines are not supported in windows, so we use docker image
+src properties and -w are docker related stuff
+docker run --rm -v "%cd%:/src" -w /src kjconroy/sqlc generate
+
+docker pull kjconroy/sqlc
+
+#yaml file
+version: "2"
+sql:
+  - engine: "postgresql"
+    queries: "./db/query"
+    schema: "./db/migration"
+    gen:
+      go:
+        package: "db"
+        out: "./db/sqlc/"
+
+# check table exist in migration folder
+
+##################################################
+migrate create -ext sql -dir db/migration -seq init_schema
+migrate -path db/migration --database "postgres://root:secret@localhost:5432/simple_bank" -verbose up
+##################################################
+docker exec -it postgres14 /bin/bash

@@ -18,21 +18,37 @@ func (server *Server) createAccount(ctx *gin.Context) {
 		return
 	}
 
-	/*
-		arg := db.CreateAccountParams{
-			Owner: createAccountReq.Owner,
-			Currency: createAccountReq.Currency,
-			Balance: 0,
-		}
+	/* v1
+	arg := db.CreateAccountParams{
+		Owner: createAccountReq.Owner,
+		Currency: createAccountReq.Currency,
+		Balance: 0,
+	}
 
-		account, err := server.store.CreateAccount(ctx, arg)
-		if err != nil {
-			ctx.JSON(http.StatusInternalServerError, errorResponse(err))
-			return
-		}
-		ctx.JSON(http.StatusOK, account)
+	account, err := server.store.CreateAccount(ctx, arg)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
+	ctx.JSON(http.StatusOK, account)
 	*/
 
+	/* v2
+
+	authPayLoad := ctx.MustGet(authorizationPayloadKey).(*token.Payload)
+	arg := db.CreateAccountParams{
+		Owner: authPayLoad.Username,
+		Currency: createAccountReq.Currency,
+		Balance: 0,
+	}
+
+	account, err := server.store.CreateAccount(ctx, arg)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
+	ctx.JSON(http.StatusOK, account)
+	*/
 }
 
 type getAccountRequest struct {
@@ -50,6 +66,13 @@ func (server *Server) getAccount(ctx *gin.Context) {
 		account, err := server.store.GetAccount(ctx, req.ID)
 		if err != nil {
 			ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+			return
+		}
+
+		authPayLoad := ctx.MustGet(authorizationPayloadKey).(*token.Payload)
+		if account.Owner != authPayLoad.userName{
+			err := error.New("account doesn't belong to authenticated user")
+		    ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 			return
 		}
 		ctx.JSON(http.StatusOK, account)
@@ -79,6 +102,15 @@ func (server *Server) getAccountList(ctx *gin.Context) {
 	}
 
 	/*
+		// ------------- v2 After Authorization Added
+		authPayLoad := ctx.MustGet(authorizationPayloadKey).(*token.Payload)
+		arg := db.ListAccountsParams{
+			Owner:authPayload.Username,
+			Limit: req.PageSize,
+			Offset: (req.PageID -1) * req.PageSize,
+		}
+		// ------------- v2
+
 		account, err := server.store.ListAccounts(ctx, req.ID)
 		if err != nil {
 			ctx.JSON(http.StatusInternalServerError, errorResponse(err))

@@ -2,11 +2,19 @@
 // versions:
 //   sqlc v1.19.1
 
-package go_challenge
+package db
 
 import (
 	"time"
 )
+
+type Account struct {
+	ID        int64
+	Owner     string
+	Balance   int64
+	Currency  string
+	CreatedAt time.Time
+}
 
 type User struct {
 	UserName          string

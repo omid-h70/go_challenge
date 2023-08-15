@@ -2,7 +2,7 @@
 // versions:
 //   sqlc v1.19.1
 
-package go_challenge
+package db
 
 import (
 	"context"

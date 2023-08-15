@@ -4,27 +4,60 @@ import (
 	"bufio"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
+	"github.com/go-playground/validator/v10"
 	"go_challenge/cmd"
 	"go_challenge/cmd/handlers"
 	"go_challenge/cmd/models"
+	db "go_challenge/db/sqlc"
+	"go_challenge/token"
+	"go_challenge/util"
 	"os"
 	"strconv"
 	"strings"
 )
 
 type Server struct {
-	//store *db.store ### add it later
-	router *gin.Engine
+	store      *db.Store //### add it later
+	router     *gin.Engine
+	tokenMaker token.Maker
+	config     *util.Config
 }
 
-func NewServer() *Server {
-	server := &Server{
-		router: gin.Default(),
+func NewServer(config *util.Config, store *db.Store) (*Server, error) {
+
+	tokenMaker, err := token.NewJWTMaker(config.TokenSymmetricKey)
+	if err != nil {
+		return nil, fmt.Errorf("cannt create token %w", err)
 	}
 
-	server.router.POST("/accounts", server.createAccount)
-	server.router.GET("/accounts/:id", server.getAccount)
-	return server
+	server := &Server{
+		store:      store,
+		router:     gin.Default(),
+		tokenMaker: tokenMaker,
+		config:     config,
+	}
+
+	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
+		v.RegisterValidation("currency", validCurrency)
+	}
+
+	server.setupRouter()
+	return server, nil
+}
+
+func (server *Server) setupRouter() {
+
+	//First Two Doesn't Need it
+	server.router.POST("/users", server.createUser)
+	server.router.POST("/users/login", server.loginUser)
+
+	//Below Handlers use MiddleWares
+	authRouteGroup := server.router.Group("/").Use(authMiddleware(server.tokenMaker))
+	authRouteGroup.POST("/accounts", server.createAccount)
+	authRouteGroup.GET("/accounts/:id", server.getAccount)
+
+	authRouteGroup.POST("/transfers", server.createTransfer)
 }
 
 func (server *Server) Start(addr string) error {
