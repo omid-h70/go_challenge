@@ -1,30 +1,31 @@
 package db
 
 import (
+	"context"
+	"github.com/stretchr/testify/require"
+	"go_challenge/util"
 	"testing"
 )
 
-func createRandomUser(t *testing.T) {
+func createRandomUser(t *testing.T) CreateUserParams {
 
-	/*
-			arg := CreateUserParams{
-				Username: 		util.RandomOwner(),
-				HashedPassword: "secret",
-				FullName:	    util.RandomOwner(),
-				Email: 			util.RandomEmail()
-			}
-			user, err := testQueries.CreateUser(context.Background()arg)
-			require.NoError(t, err)
-			require.NoError(t, user)
+	arg := CreateUserParams{
+		UserName:       util.RandomOwner(),
+		HashedPassword: "secret",
+		FullName:       util.RandomOwner(),
+		Email:          util.RandomEmail(),
+	}
+	user, err := testQueries.CreateUser(context.Background(), arg)
+	require.NoError(t, err)
 
-			require.Equal(t, arg.Username, user.Username)
-			require.Equal(t, arg.HashedPassword, user.HashedPassword)
-		    require.Equal(t, arg.FullName, user.FullName)
-		    require.Equal(t, arg.Email, user.Email)
+	require.Equal(t, arg.UserName, user.UserName)
+	require.Equal(t, arg.HashedPassword, user.HashedPassword)
+	require.Equal(t, arg.FullName, user.FullName)
+	require.Equal(t, arg.Email, user.Email)
 
-			require.TRUE(t, user.PasswordChangedAt.IsZero())
-		    require.NotZero(t, user.CreatedAt)
-	*/
+	require.True(t, user.PasswordChangedAt.IsZero())
+	require.NotZero(t, user.CreatedAt)
+	return arg
 }
 
 func TestGetUser(t *testing.T) {

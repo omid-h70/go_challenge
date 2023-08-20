@@ -6,7 +6,7 @@ docker-clean:
 	docker rm ${DB_CONTAINER_NAME}
 
 postgres:
-	docker run --name ${DB_CONTAINER_NAME} -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -d postgres:14.1-alpine
+	docker run --name ${DB_CONTAINER_NAME} -v $(CURDIR)/data:/data/postgres -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -d postgres:14.1-alpine
 
 create-db:
 	docker exec -it ${DB_CONTAINER_NAME} createdb --username=root --owner=root ${DB_NAME}
@@ -20,9 +20,10 @@ migrate-up:
 migrate-down:
 	migrate -path db/migration --database ${DB_CONN_STRING} -verbose down
 
-#Windows Specific Command
+#docker run --rm -v "%cd%:/src" -w /src kjconroy/sqlc generate is Windows Specific Command
+#$(CURDIR) is gnu makefile variable and works every where (?)
 sqlc:
-	docker run --rm -v "%cd%:/src" -w /src kjconroy/sqlc generate
+	docker run --rm -v $(CURDIR):/src -w /src kjconroy/sqlc generate
 
 ping:
 	@echo "Yo, i'm alive"
