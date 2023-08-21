@@ -12,6 +12,7 @@ import (
 // Entry Point Of All Uint Tests
 // TestMain is Used For Testing a Package All together
 var testQueries *Queries
+var testDB *sql.DB
 
 func TestMain(m *testing.M) {
 	config, err := util.LoadConfig("../..") // Go For Current Path
@@ -19,11 +20,11 @@ func TestMain(m *testing.M) {
 		log.Fatal(err.Error())
 	}
 
-	conn, err := sql.Open(config.DBDriver, config.DBSource)
+	testDB, err = sql.Open(config.DBDriver, config.DBSource)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
 
-	testQueries = New(conn)
+	testQueries = New(testDB)
 	os.Exit(m.Run())
 }

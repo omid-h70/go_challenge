@@ -3,7 +3,7 @@ package handlers
 import (
 	"encoding/json"
 	"fmt"
-	"go_challenge/cmd/models"
+	"go_challenge/_cmd/models"
 	"log"
 	"net/http"
 	"strings"

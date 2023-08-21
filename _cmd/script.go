@@ -1,6 +1,6 @@
-package cmd
+package _cmd
 
-import "go_challenge/cmd/handlers"
+import "go_challenge/_cmd/handlers"
 
 func RunRestApp() {
 

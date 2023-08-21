@@ -6,9 +6,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/validator/v10"
-	"go_challenge/cmd"
-	"go_challenge/cmd/handlers"
-	"go_challenge/cmd/models"
+	"go_challenge/_cmd"
+	"go_challenge/_cmd/handlers"
+	"go_challenge/_cmd/models"
 	db "go_challenge/db/sqlc"
 	"go_challenge/token"
 	"go_challenge/util"
@@ -84,7 +84,7 @@ func RunCli() {
 	fmt.Println("\n\n\n\n\n")
 	fmt.Println("Welcome to go_challenge mini app")
 	fmt.Println("You Must Have Docker installed for running this app")
-	fmt.Println("First Please run docker-compose up in {$PWD}/cmd/models path to have your postgres ready")
+	fmt.Println("First Please run docker-compose up in {$PWD}/_cmd/models path to have your postgres ready")
 	fmt.Println("Press 1 or 2 or q to quit")
 	fmt.Println("1. To Start localhost on port 8000")
 	fmt.Println("2. To Cli Dummy Generator")
@@ -95,7 +95,7 @@ func RunCli() {
 		inStr, _ := reader.ReadString('\n')
 		inStr = strings.TrimRight(inStr, "\r\n")
 		if string(inStr) == "1" {
-			cmd.RunRestApp()
+			_cmd.RunRestApp()
 			break
 		} else if string(inStr) == "2" {
 

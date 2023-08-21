@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	_ "github.com/lib/pq"
 	"go_challenge/api"
-	"go_challenge/cmd"
 	db "go_challenge/db/sqlc"
 	"go_challenge/util"
 	"log"
@@ -40,9 +39,4 @@ func main() {
 	if err != nil {
 		log.Fatal("can't start server")
 	}
-}
-
-func _main() {
-	cmd.RunRestApp()
-	return
 }

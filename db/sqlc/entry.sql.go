@@ -36,11 +36,11 @@ func (q *Queries) CreateEntry(ctx context.Context, arg CreateEntryParams) (Entry
 
 const getEntry = `-- name: GetEntry :one
 SELECT entry_id, account_id, amount, created_at FROM entries
-WHERE account_id=$1 LIMIT 1
+WHERE entry_id=$1 LIMIT 1
 `
 
-func (q *Queries) GetEntry(ctx context.Context, accountID int64) (Entry, error) {
-	row := q.db.QueryRowContext(ctx, getEntry, accountID)
+func (q *Queries) GetEntry(ctx context.Context, entryID int64) (Entry, error) {
+	row := q.db.QueryRowContext(ctx, getEntry, entryID)
 	var i Entry
 	err := row.Scan(
 		&i.EntryID,

@@ -39,7 +39,7 @@ func TestGetAccount(t *testing.T) {
 	require.NoError(t, err)
 	require.NotEmpty(t, dbAccount)
 	require.Equal(t, account.AccountID, dbAccount.AccountID)
-	require.WithinDuration(t, account.CreatedAt.Time, dbAccount.CreatedAt.Time, time.Second)
+	require.WithinDuration(t, account.CreatedAt, dbAccount.CreatedAt, time.Second)
 }
 
 func TestUpdateAccount(t *testing.T) {
