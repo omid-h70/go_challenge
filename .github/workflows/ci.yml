@@ -18,10 +18,10 @@ jobs:
       #Label used to access service container
       postgres:
         #docker image
-        iamge: postgres:14.1-alpine
+        image: postgres:14.1-alpine
         env:
           POSTGRES_USER: root
-          POSTGRE_PASSWORD: postgres
+          POSTGRES_PASSWORD: postgres
           POSTGRES_DB: test_db
         # set health checks to wait until postgres has started
         options: >-
