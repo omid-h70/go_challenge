@@ -1,0 +1,3 @@
+ALTER TABLE IF EXISTS "sessions" DROP CONSTRAINT IF EXISTS "fk_user_name";
+
+DROP TABLE IF EXISTS "sessions";

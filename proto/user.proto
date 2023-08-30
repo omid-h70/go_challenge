@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "go_challenge/pb";
+
+import "google/protobuf/timestamp.proto";
+
+//the end number is very important to identify the message while serialized
+// using small numbers 1 - 15 only take one bytes - so we're saving sth in between
+message User{
+  string user_name = 1;
+  string full_name = 2;
+  string email = 3;
+  google.protobuf.Timestamp password_changed_at = 4;
+  google.protobuf.Timestamp created_at = 5;
+}

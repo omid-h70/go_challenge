@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "go_challenge/pb";
+
+import "user.proto";
+
+//the end number is very important to identify the message while serialized
+// using small numbers 1 - 15 only take one bytes - so we're saving sth in between
+message CreateUserRequest{
+  string user_name = 1;
+  string full_name = 2;
+  string email = 3;
+  string password = 4;
+}
+
+message CreateUserResponse{
+  User user = 1;
+}

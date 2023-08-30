@@ -48,9 +48,10 @@ func NewServer(config *util.Config, store db.Store) (*Server, error) {
 
 func (server *Server) setupRouter() {
 
-	//First Two Doesn't Need it
+	//First routes Doesn't Need it
 	server.router.POST("/users", server.createUser)
 	server.router.POST("/users/login", server.loginUser)
+	server.router.POST("/users/renew_access", server.renewAccessToken)
 
 	//Below Handlers use MiddleWares
 	authRouteGroup := server.router.Group("/").Use(authMiddleware(server.tokenMaker))

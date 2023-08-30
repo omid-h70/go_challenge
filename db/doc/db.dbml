@@ -1,0 +1,76 @@
+Project simple_bank {
+    database_type: 'PostgreSQL'
+    Note: '''
+    # simple Bank Database
+    '''
+}
+
+Table "accounts" {
+  "account_id" bigserial [pk, increment]
+  "owner" varchar [not null]
+  "balance" bigint [not null]
+  "currency" varchar [not null]
+  "created_at" timestamptz [default: `now()`]
+
+    Indexes {
+      owner
+    }
+}
+
+Table "entries" {
+  "entry_id" bigserial [pk, increment]
+  "account_id" bigserial [increment]
+  "amount" bigint [not null, note: 'it can be negative or positive']
+  "created_at" timestamptz [default: `now()`]
+
+    Indexes {
+      account_id
+    }
+}
+
+Table "transfers" {
+  "transfer_id" bigint [pk]
+  "from_account_id" bigserial [increment]
+  "to_account_id" bigserial [increment]
+  "amount" bigint [not null, note: 'it most be positive']
+  "created_at" timestamptz [default: `now()`]
+
+    Indexes {
+      from_account_id
+      to_account_id
+      (from_account_id, to_account_id)
+    }
+}
+
+Table "users" {
+  "user_name" varchar [pk]
+  "hashed_password" varchar [not null]
+  "full_name" varchar [not null]
+  "refresh_token" varchar [not null]
+  "email" varchar [not null]
+  "password_changed_at" timestamptz [not null, default: `0001-01-01 00:00:00Z`]
+  "created_at" timestamptz [default: `now()`]
+
+}
+
+
+Table "sessions" {
+  "session_uuid" uuid [pk]
+  "user_name" varchar [not null]
+  "user_agent" varchar [not null]
+  "refresh_token" varchar [not null]
+  "client_ip" varchar [not null]
+  "is_blocked" boolean [default: `false`]
+  "expires_at" timestamptz [not null]
+  "created_at" timestamptz [default: `now()`]
+}
+
+Ref:"accounts"."owner" < "users"."user_name"
+
+Ref:"accounts"."account_id" < "entries"."account_id"
+
+Ref:"accounts"."account_id" < "transfers"."from_account_id"
+
+Ref:"accounts"."account_id" < "transfers"."to_account_id"
+
+Ref:"users"."user_name" < "sessions"."user_name"

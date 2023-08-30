@@ -35,3 +35,13 @@ migrate create -ext sql -dir db/migration -seq init_schema
 migrate -path db/migration --database "postgres://root:secret@localhost:5432/simple_bank" -verbose up
 ##################################################
 docker exec -it postgres14 /bin/bash
+
+for add sessions migration
+migrate create -ext sql -dir db/migration -seq add_sessions
+
+################################################## psql ##################################################
+Connect to postgres container
+docker exec -it ${DB_CONTAINER_NAME} psql -U root
+\l => to see all in there
+\c simple_bank => to connect to database
+\dt => to see all tables in that database

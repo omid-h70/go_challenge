@@ -7,6 +7,7 @@ package db
 
 import (
 	"context"
+	"database/sql"
 )
 
 const createUser = `-- name: CreateUser :one
@@ -19,10 +20,10 @@ INSERT INTO users (
 `
 
 type CreateUserParams struct {
-	UserName       string
-	HashedPassword string
-	FullName       string
-	Email          string
+	UserName       string `json:"user_name"`
+	HashedPassword string `json:"hashed_password"`
+	FullName       string `json:"full_name"`
+	Email          string `json:"email"`
 }
 
 func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, error) {
@@ -50,6 +51,190 @@ SELECT user_name, hashed_password, full_name, email, password_changed_at, create
 
 func (q *Queries) GetUser(ctx context.Context, userName string) (User, error) {
 	row := q.db.QueryRowContext(ctx, getUser, userName)
+	var i User
+	err := row.Scan(
+		&i.UserName,
+		&i.HashedPassword,
+		&i.FullName,
+		&i.Email,
+		&i.PasswordChangedAt,
+		&i.CreatedAt,
+	)
+	return i, err
+}
+
+const updateUser = `-- name: UpdateUser :one
+UPDATE users
+SET
+    hashed_password = COALESCE($1, hashed_password),
+    password_changed_at = COALESCE($2, password_changed_at),
+    full_name = COALESCE($3, full_name),
+    email = COALESCE($4, email)
+WHERE
+    user_name =  $5
+RETURNING user_name, hashed_password, full_name, email, password_changed_at, created_at
+`
+
+type UpdateUserParams struct {
+	HashedPassword    sql.NullString `json:"hashed_password"`
+	PasswordChangedAt sql.NullTime   `json:"password_changed_at"`
+	FullName          sql.NullString `json:"full_name"`
+	Email             sql.NullString `json:"email"`
+	UserName          string         `json:"user_name"`
+}
+
+// using nullable types
+func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) (User, error) {
+	row := q.db.QueryRowContext(ctx, updateUser,
+		arg.HashedPassword,
+		arg.PasswordChangedAt,
+		arg.FullName,
+		arg.Email,
+		arg.UserName,
+	)
+	var i User
+	err := row.Scan(
+		&i.UserName,
+		&i.HashedPassword,
+		&i.FullName,
+		&i.Email,
+		&i.PasswordChangedAt,
+		&i.CreatedAt,
+	)
+	return i, err
+}
+
+const updateUser1 = `-- name: UpdateUser1 :one
+UPDATE users
+SET
+    hashed_password = $1,
+    full_name = $2,
+    email = $3
+WHERE
+    user_name =  $4
+RETURNING user_name, hashed_password, full_name, email, password_changed_at, created_at
+`
+
+type UpdateUser1Params struct {
+	HashedPassword string `json:"hashed_password"`
+	FullName       string `json:"full_name"`
+	Email          string `json:"email"`
+	UserName       string `json:"user_name"`
+}
+
+func (q *Queries) UpdateUser1(ctx context.Context, arg UpdateUser1Params) (User, error) {
+	row := q.db.QueryRowContext(ctx, updateUser1,
+		arg.HashedPassword,
+		arg.FullName,
+		arg.Email,
+		arg.UserName,
+	)
+	var i User
+	err := row.Scan(
+		&i.UserName,
+		&i.HashedPassword,
+		&i.FullName,
+		&i.Email,
+		&i.PasswordChangedAt,
+		&i.CreatedAt,
+	)
+	return i, err
+}
+
+const updateUser2 = `-- name: UpdateUser2 :one
+UPDATE users
+SET
+    hashed_password = CASE
+        WHEN $1::boolean = TRUE THEN $2
+        ELSE hashed_password
+    END,
+    full_name = CASE
+        WHEN $3::boolean = TRUE THEN $4
+        ELSE full_name
+    END,
+    email = CASE
+        WHEN  $5::boolean = TRUE THEN $6
+        ELSE email
+    END
+WHERE
+    user_name =  $7
+RETURNING user_name, hashed_password, full_name, email, password_changed_at, created_at
+`
+
+type UpdateUser2Params struct {
+	SetHashedPassword bool   `json:"set_hashed_password"`
+	HashedPassword    string `json:"hashed_password"`
+	SetFullName       bool   `json:"set_full_name"`
+	FullName          string `json:"full_name"`
+	SetEmail          bool   `json:"set_email"`
+	Email             string `json:"email"`
+	UserName          string `json:"user_name"`
+}
+
+// @ is the same as sqlc.arg - @ used for named parameters - $ used for positional parameters
+// @hashed_password is the one from outside - hashed_password (without @) is database field
+func (q *Queries) UpdateUser2(ctx context.Context, arg UpdateUser2Params) (User, error) {
+	row := q.db.QueryRowContext(ctx, updateUser2,
+		arg.SetHashedPassword,
+		arg.HashedPassword,
+		arg.SetFullName,
+		arg.FullName,
+		arg.SetEmail,
+		arg.Email,
+		arg.UserName,
+	)
+	var i User
+	err := row.Scan(
+		&i.UserName,
+		&i.HashedPassword,
+		&i.FullName,
+		&i.Email,
+		&i.PasswordChangedAt,
+		&i.CreatedAt,
+	)
+	return i, err
+}
+
+const updateUser3 = `-- name: UpdateUser3 :one
+UPDATE users
+SET
+    hashed_password = CASE
+        WHEN $1::boolean = TRUE THEN $2
+        ELSE hashed_password
+    END,
+    full_name = CASE
+        WHEN $3::boolean = TRUE THEN $4
+        ELSE full_name
+    END,
+    email = CASE
+        WHEN  $5::boolean = TRUE THEN $6
+        ELSE email
+    END
+WHERE
+    user_name =  $7
+RETURNING user_name, hashed_password, full_name, email, password_changed_at, created_at
+`
+
+type UpdateUser3Params struct {
+	SetHashedPassword bool   `json:"set_hashed_password"`
+	HashedPassword    string `json:"hashed_password"`
+	SetFullName       bool   `json:"set_full_name"`
+	FullName          string `json:"full_name"`
+	SetEmail          bool   `json:"set_email"`
+	Email             string `json:"email"`
+	UserName          string `json:"user_name"`
+}
+
+func (q *Queries) UpdateUser3(ctx context.Context, arg UpdateUser3Params) (User, error) {
+	row := q.db.QueryRowContext(ctx, updateUser3,
+		arg.SetHashedPassword,
+		arg.HashedPassword,
+		arg.SetFullName,
+		arg.FullName,
+		arg.SetEmail,
+		arg.Email,
+		arg.UserName,
+	)
 	var i User
 	err := row.Scan(
 		&i.UserName,
