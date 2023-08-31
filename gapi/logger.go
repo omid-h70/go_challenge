@@ -2,7 +2,7 @@ package gapi
 
 import (
 	"context"
-	zlog "github.com/rs/zerolog"
+	zlog "github.com/rs/zerolog/log"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"net/http"
@@ -16,17 +16,19 @@ func GrpcLogger(
 	handler grpc.UnaryHandler,
 ) (resp any, err error) {
 
-	time := time.Now()
+	now := time.Now()
 	rsp, err := handler(ctx, req)
-	duration := time.Since()
+	duration := time.Since(now)
 
-	statusCode := codes.Unknown()
-	if st, ok := statusCode.FromErr(err); ok {
-		statusCode = st.Code()
-	}
+	statusCode := codes.Unknown
+	/*
+		if st, ok := statusCode.FromErr(err); ok {
+			statusCode = st.Code()
+		}
+	*/
 
 	logger := zlog.Info()
-	if log != nil {
+	if logger != nil {
 		logger = zlog.Error().Err(err)
 	}
 
@@ -70,13 +72,13 @@ func HttpLogger(handler http.Handler) http.Handler {
 
 		logger := zlog.Info()
 		if rec.StatusCode != http.StatusOK {
-			logger = log.Error().Bytes("body", rec.Body)
+			logger = zlog.Error().Bytes("body", rec.Body)
 		}
 
 		logger.
 			Str("protocol", "http").
-			Int("status-code", req.Method).
-			Str("status_code", rec.StatusCode).
+			Str("status-code", req.Method).
+			Int("status_code", rec.StatusCode).
 			Str("status_text", http.StatusText(rec.StatusCode)).
 			Dur("Duration", duration).
 			Msg("received a http request")

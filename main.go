@@ -4,28 +4,21 @@ import (
 	"context"
 	"database/sql"
 	"github.com/golang-migrate/migrate/v4"
-	_ "github.com/golang-migrate/migrate/v4"
-	_ "github.com/golang-migrate/migrate/v4/database/postgres"
-	_ "github.com/golang-migrate/migrate/v4/source/file"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/hibiken/asynq"
-	_ "github.com/lib/pq"
 	"github.com/rakyll/statik/fs"
-	"github.com/redis/go-redis/v9"
+	zlog "github.com/rs/zerolog/log"
 	"go_challenge/api"
 	db "go_challenge/db/sqlc"
-	_ "go_challenge/doc/statik" //you can replace it by go1.16 embed feature
 	"go_challenge/gapi"
 	"go_challenge/pb"
 	"go_challenge/util"
 	"go_challenge/worker"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
-	zlog "github.com/rs/zerolog"
 	"log"
 	"net"
 	"net/http"
-	"os"
 )
 
 /*
@@ -47,12 +40,12 @@ func main() {
 
 	if config.Env == "development" {
 		//to have more human friendly logs
-		log.Logger = log.Output(zerolog.consoleWriter({Out: os.Stderr})
+		//zlog.Logger = zlog.Output(log.consoleWriter({Out: os.Stderr})
 	}
 
 	conn, err := sql.Open(config.DBDriver, config.DBSource)
 	if err != nil {
-		log.Fatal.Msg(err.Error())
+		zlog.Fatal().Msg(err.Error())
 	}
 
 	/* missing dependency */
@@ -60,37 +53,38 @@ func main() {
 		"./db/migration",
 		config.DBSource)
 	if err != nil {
-		log.FatalMsg("cant create new migration")
+		zlog.Fatal().Msg("cant create new migration")
 	}
-	if err := m.Up(); err != nil && err != migrate.ErrNoChange{
+	if err := m.Up(); err != nil && err != migrate.ErrNoChange {
 		if err != nil {
-		log.Fatal.Msg("cant run migration up command", err)
+			zlog.Fatal().Err(err).Msg("cant run migration up command")
+		}
+		log.Println("db migrated successfully")
+
+		store := db.NewStore(conn)
+		server, _ := api.NewServer(&config, store)
+
+		err = server.Start(config.HttpServerAddress)
+		if err != nil {
+			log.Fatal("can't start server", err)
+		}
+
+		redisOpt := asynq.RedisClientOpt{
+			Addr: config.RedisAddr,
+		}
+		tskDistributor := worker.NewRedisTaskDistributor(redisOpt)
+
+		runGrpcServer(config, store, tskDistributor)
+		go runGatewayServer(config, store, tskDistributor)
+		go runTaskProcessor(redisOpt, store)
 	}
-	log.Println("db migrated successfully")
-
-	store := db.NewStore(conn)
-	server, _ := api.NewServer(&config, store)
-
-	err = server.Start(config.HttpServerAddress)
-	if err != nil {
-		log.Fatal("can't start server", err)
-	}
-
-	redisOpt := async.RedisClientOpt{
-		Addr: config.RedisAddr,
-	}
-	tskDistributr := worker.NewRedisTaskDistributor(redisOpt)
-
-	runGrpcServer(config, store, tskDistributr)
-	go runGatewayServer(config, store)
-	go runTaskProcessor(redisOpt, store)
 }
 
-func runTaskProcessor(redisOpt asynq.RedisClientOpt, store db.Store){
+func runTaskProcessor(redisOpt asynq.RedisClientOpt, store db.Store) {
 	taskProcessor := worker.NewRedisTaskProcessor(redisOpt, store)
-	log.Info().Msg("start task processor")
+	zlog.Info().Msg("start task processor")
 	if err := taskProcessor.Start(); err != nil {
-		log.Fatal().Err(err).Msg("failed to start processing redis tasks")
+		zlog.Fatal().Err(err).Msg("failed to start processing redis tasks")
 	}
 }
 

@@ -3,6 +3,7 @@ package worker
 import (
 	"context"
 	"github.com/hibiken/asynq"
+	zlog "github.com/rs/zerolog/log"
 	db "go_challenge/db/sqlc"
 )
 
@@ -20,20 +21,20 @@ type RedisTaskProcessor struct {
 	store  db.Store
 }
 
-func NewRedisTaskProcessor(redisOpt asynq.RedisClientOpt, store db.Store) TaskProcessor {
+func NewRedisTaskProcessor(redisOpt asynq.RedisClientOpt, store db.Store) *RedisTaskProcessor {
 	return &RedisTaskProcessor{
 		server: asynq.NewServer(redisOpt, asynq.Config{
 			Queues: map[string]int{
 				QueueCritical: 10, //Set Priority for each queue
 				QueueDefault:  5,  //Set Priority for each queue
 			},
-			ErrorHandler: asynq.ErrorHandlerFunc(func(ctx context.Context, task *Task, err error) {
-				log.Error().Msg("process Task failed")
-				.Str("type", task.Type())
-				.Bytes("payload", task.PayLoad())
-				.Msg("process task failed")
+			ErrorHandler: asynq.ErrorHandlerFunc(func(ctx context.Context, task *asynq.Task, err error) {
+				zlog.Error().Err(err).
+					Str("type", task.Type()).
+					Bytes("payload", task.Payload()).
+					Msg("process task failed")
 			}),
-			Logger: NewLogger(),//add Custom Logger
+			Logger: NewLogger(), //add Custom Logger
 		}),
 		store: store,
 	}

@@ -1,7 +1,5 @@
 package db
 
-package db
-
 import "context"
 
 // CreateUserTxParam Contains input parameter for Transfer Transaction
@@ -13,6 +11,7 @@ type CreateUserTxParam struct {
 type CreateUserTxResult struct {
 	User User
 }
+
 // CreateUserTx outbox outbox outbox
 // we are performing outbox pattern here
 // vvvvvvvvvvvvvvoooooooooooolllllllllllllllllllaaaaaaa
@@ -30,5 +29,3 @@ func (store *SqlStore) CreateUserTx(ctx context.Context, arg CreateUserTxParam) 
 	})
 	return result, err
 }
-
-

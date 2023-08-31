@@ -2,9 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
-	"fmt"
 	"go_challenge/_cmd/models"
-	"log"
 	"net/http"
 	"strings"
 )
@@ -12,17 +10,20 @@ import (
 const serverAddr string = "localhost:8000"
 
 func StartServer() {
-	mux := mux.NewRouter()
+	/*
+		mux := mux.NewRouter()
 
-	//wiring Application Parts
-	fmt.Println("Server is Listening On " + serverAddr)
-	mux.HandleFunc("/request", getRecords)
-	mux.HandleFunc("/report", getTradeReport)
-	log.Fatal(http.ListenAndServe("localhost:8000", mux))
+		//wiring Application Parts
+		fmt.Println("Server is Listening On " + serverAddr)
+		mux.HandleFunc("/request", getRecords)
+		mux.HandleFunc("/report", getTradeReport)
+		log.Fatal(http.ListenAndServe("localhost:8000", mux))
 
-	fmt.Println("Urls You can reach By GET And json Content-Type")
-	fmt.Println("http://localhost:8000/request?table=instrument | trade")
-	fmt.Println("http://localhost:8000/report?name=GOOGL | AAPL")
+		fmt.Println("Urls You can reach By GET And json Content-Type")
+		fmt.Println("http://localhost:8000/request?table=instrument | trade")
+		fmt.Println("http://localhost:8000/report?name=GOOGL | AAPL")
+
+	*/
 }
 
 func getAllTradeRecords(w http.ResponseWriter, r *http.Request) {

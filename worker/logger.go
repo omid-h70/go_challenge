@@ -3,36 +3,37 @@ package worker
 import (
 	"fmt"
 	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 )
 
 type Logger struct {
 }
 
-// we implemented asynq.Logger interface
+// NewLogger we implemented asynq.Logger interface
 func NewLogger() *Logger {
 	return &Logger{}
 }
 
-func (l *logger) Print(int logLevel, args ...any) {
+func (l *Logger) Print(logLevel zerolog.Level, args ...any) {
 	log.WithLevel(logLevel).Msg(fmt.Sprint(args...))
 }
 
-func (l *logger) Debug(args ...any) {
+func (l *Logger) Debug(args ...any) {
 	l.Print(zerolog.DebugLevel, args...)
 }
 
-func (l *logger) Info(args ...any) {
+func (l *Logger) Info(args ...any) {
 	l.Print(zerolog.InfoLevel, args...)
 }
 
-func (l *logger) Warn(args ...any) {
+func (l *Logger) Warn(args ...any) {
 	l.Print(zerolog.WarnLevel, args...)
 }
 
-func (l *logger) Error(args ...any) {
+func (l *Logger) Error(args ...any) {
 	l.Print(zerolog.ErrorLevel, args...)
 }
 
-func (l *logger) Fatal(args ...any) {
+func (l *Logger) Fatal(args ...any) {
 	l.Print(zerolog.FatalLevel, args...)
 }
