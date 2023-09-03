@@ -5,52 +5,65 @@
 package db
 
 import (
+	"database/sql"
 	"time"
 
 	"github.com/google/uuid"
 )
 
 type Account struct {
-	AccountID int64     `json:"account_id"`
-	Owner     string    `json:"owner"`
-	Balance   int64     `json:"balance"`
-	Currency  string    `json:"currency"`
-	CreatedAt time.Time `json:"created_at"`
+	AccountID int64        `json:"account_id"`
+	Owner     string       `json:"owner"`
+	Balance   int64        `json:"balance"`
+	Currency  string       `json:"currency"`
+	CreatedAt sql.NullTime `json:"created_at"`
 }
 
 type Entry struct {
-	EntryID   int64 `json:"entry_id"`
-	AccountID int64 `json:"account_id"`
+	EntryID   int64         `json:"entry_id"`
+	AccountID sql.NullInt64 `json:"account_id"`
 	// it can be negative or positive
-	Amount    int64     `json:"amount"`
-	CreatedAt time.Time `json:"created_at"`
+	Amount    int64        `json:"amount"`
+	CreatedAt sql.NullTime `json:"created_at"`
 }
 
 type Session struct {
-	SessionUuid  uuid.UUID `json:"session_uuid"`
-	UserName     string    `json:"user_name"`
-	UserAgent    string    `json:"user_agent"`
-	RefreshToken string    `json:"refresh_token"`
-	ClientIp     string    `json:"client_ip"`
-	IsBlocked    bool      `json:"is_blocked"`
-	ExpiresAt    time.Time `json:"expires_at"`
-	CreatedAt    time.Time `json:"created_at"`
+	SessionUuid  uuid.UUID    `json:"session_uuid"`
+	UserName     string       `json:"user_name"`
+	UserAgent    string       `json:"user_agent"`
+	RefreshToken string       `json:"refresh_token"`
+	ClientIp     string       `json:"client_ip"`
+	IsBlocked    sql.NullBool `json:"is_blocked"`
+	ExpiresAt    time.Time    `json:"expires_at"`
+	CreatedAt    sql.NullTime `json:"created_at"`
 }
 
 type Transfer struct {
-	TransferID    int64 `json:"transfer_id"`
-	FromAccountID int64 `json:"from_account_id"`
-	ToAccountID   int64 `json:"to_account_id"`
+	TransferID    int64         `json:"transfer_id"`
+	FromAccountID sql.NullInt64 `json:"from_account_id"`
+	ToAccountID   sql.NullInt64 `json:"to_account_id"`
 	// it most be positive
-	Amount    int64     `json:"amount"`
-	CreatedAt time.Time `json:"created_at"`
+	Amount    int64        `json:"amount"`
+	CreatedAt sql.NullTime `json:"created_at"`
 }
 
 type User struct {
-	UserName          string    `json:"user_name"`
-	HashedPassword    string    `json:"hashed_password"`
-	FullName          string    `json:"full_name"`
-	Email             string    `json:"email"`
-	PasswordChangedAt time.Time `json:"password_changed_at"`
-	CreatedAt         time.Time `json:"created_at"`
+	UserName          string       `json:"user_name"`
+	HashedPassword    string       `json:"hashed_password"`
+	FullName          string       `json:"full_name"`
+	RefreshToken      string       `json:"refresh_token"`
+	Email             string       `json:"email"`
+	IsEmailVerified   bool         `json:"is_email_verified"`
+	PasswordChangedAt time.Time    `json:"password_changed_at"`
+	CreatedAt         sql.NullTime `json:"created_at"`
+}
+
+type VerifyEmail struct {
+	ID         int64     `json:"id"`
+	Username   string    `json:"username"`
+	Email      string    `json:"email"`
+	SecretCode string    `json:"secret_code"`
+	IsUsed     bool      `json:"is_used"`
+	CreatedAt  time.Time `json:"created_at"`
+	ExpiredAt  time.Time `json:"expired_at"`
 }

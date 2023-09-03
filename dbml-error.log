@@ -1,0 +1,175 @@
+2023-09-02T07:31:09.051Z
+Error: ENOENT: no such file or directory, stat 'D:\workspace\go\go_challenge\doc\db.dbml'
+    at Object.statSync (node:fs:1690:3)
+    at validateFilePlugin (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\lib\cli\validatePlugins\validatePlugins.js:10:28)
+    at C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\lib\cli\utils.js:21:31
+    at Array.every (<anonymous>)
+    at validateInputFilePaths (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\lib\cli\utils.js:21:16)
+    at exportHandler (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\lib\cli\export.js:21:39)
+    at Object.dbml2sql (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\lib\cli\index.js:19:23)
+    at Object.<anonymous> (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\bin\dbml2sql.js:4:19)
+    at Module._compile (node:internal/modules/cjs/loader:1256:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1310:10)
+
+2023-09-02T07:32:45.914Z
+SyntaxError: You have a syntax error at "db.dbml" line 58 column 25. Can't find table "null"."U"
+    at C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\lib\cli\utils.js:45:13
+    at Array.forEach (<anonymous>)
+    at generate (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\lib\cli\utils.js:39:14)
+    at exportHandler (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\lib\cli\export.js:28:27)
+    at Object.dbml2sql (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\lib\cli\index.js:19:23)
+    at Object.<anonymous> (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\bin\dbml2sql.js:4:19)
+    at Module._compile (node:internal/modules/cjs/loader:1256:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1310:10)
+    at Module.load (node:internal/modules/cjs/loader:1119:32)
+    at Module._load (node:internal/modules/cjs/loader:960:12)
+
+ROOT_ERROR:
+Error: Can't find table "null"."U"
+    at Endpoint.error (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\node_modules\@dbml\core\lib\model_structure\element.js:55:13)
+    at new Endpoint (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\node_modules\@dbml\core\lib\model_structure\endpoint.js:59:13)
+    at C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\node_modules\@dbml\core\lib\model_structure\ref.js:71:31
+    at Array.forEach (<anonymous>)
+    at Ref.processEndpoints (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\node_modules\@dbml\core\lib\model_structure\ref.js:70:20)
+    at new Ref (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\node_modules\@dbml\core\lib\model_structure\ref.js:58:11)
+    at C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\node_modules\@dbml\core\lib\model_structure\database.js:133:28
+    at Array.forEach (<anonymous>)
+    at Database.processSchemaElements (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\node_modules\@dbml\core\lib\model_structure\database.js:107:16)
+    at new Database (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\node_modules\@dbml\core\lib\model_structure\database.js:68:11)
+{"start":{"offset":1420,"line":58,"column":25},"end":{"offset":1434,"line":58,"column":39}}
+
+2023-09-02T07:32:50.274Z
+SyntaxError: You have a syntax error at "db.dbml" line 58 column 25. Can't find table "null"."U"
+    at C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\lib\cli\utils.js:45:13
+    at Array.forEach (<anonymous>)
+    at generate (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\lib\cli\utils.js:39:14)
+    at exportHandler (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\lib\cli\export.js:28:27)
+    at Object.dbml2sql (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\lib\cli\index.js:19:23)
+    at Object.<anonymous> (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\bin\dbml2sql.js:4:19)
+    at Module._compile (node:internal/modules/cjs/loader:1256:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1310:10)
+    at Module.load (node:internal/modules/cjs/loader:1119:32)
+    at Module._load (node:internal/modules/cjs/loader:960:12)
+
+ROOT_ERROR:
+Error: Can't find table "null"."U"
+    at Endpoint.error (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\node_modules\@dbml\core\lib\model_structure\element.js:55:13)
+    at new Endpoint (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\node_modules\@dbml\core\lib\model_structure\endpoint.js:59:13)
+    at C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\node_modules\@dbml\core\lib\model_structure\ref.js:71:31
+    at Array.forEach (<anonymous>)
+    at Ref.processEndpoints (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\node_modules\@dbml\core\lib\model_structure\ref.js:70:20)
+    at new Ref (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\node_modules\@dbml\core\lib\model_structure\ref.js:58:11)
+    at C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\node_modules\@dbml\core\lib\model_structure\database.js:133:28
+    at Array.forEach (<anonymous>)
+    at Database.processSchemaElements (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\node_modules\@dbml\core\lib\model_structure\database.js:107:16)
+    at new Database (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\node_modules\@dbml\core\lib\model_structure\database.js:68:11)
+{"start":{"offset":1420,"line":58,"column":25},"end":{"offset":1434,"line":58,"column":39}}
+
+2023-09-02T07:35:15.200Z
+SyntaxError: You have a syntax error at "db.dbml" line 8 column 18. Expected " ", "[", "as", "{", comment, or whitespace but "A" found.
+    at C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\lib\cli\utils.js:45:13
+    at Array.forEach (<anonymous>)
+    at generate (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\lib\cli\utils.js:39:14)
+    at exportHandler (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\lib\cli\export.js:28:27)
+    at Object.dbml2sql (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\lib\cli\index.js:19:23)
+    at Object.<anonymous> (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\bin\dbml2sql.js:4:19)
+    at Module._compile (node:internal/modules/cjs/loader:1256:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1310:10)
+    at Module.load (node:internal/modules/cjs/loader:1119:32)
+    at Module._load (node:internal/modules/cjs/loader:960:12)
+
+ROOT_ERROR:
+SyntaxError: Expected " ", "[", "as", "{", comment, or whitespace but "A" found.
+    at peg$buildStructuredError (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\node_modules\@dbml\core\lib\parse\dbmlParser.js:1090:12)
+    at Object.peg$parse [as parse] (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\node_modules\@dbml\core\lib\parse\dbmlParser.js:6903:11)
+    at Function.parseDBMLToJSON (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\node_modules\@dbml\core\lib\parse\Parser.js:43:37)
+    at Function.parse (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\node_modules\@dbml\core\lib\parse\Parser.js:67:32)
+    at Object._export [as export] (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\node_modules\@dbml\core\lib\export\index.js:11:37)
+    at C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\lib\cli\export.js:28:69
+    at C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\lib\cli\utils.js:42:23
+    at Array.forEach (<anonymous>)
+    at generate (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\lib\cli\utils.js:39:14)
+    at exportHandler (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\lib\cli\export.js:28:27)
+{"start":{"offset":130,"line":8,"column":18},"end":{"offset":131,"line":8,"column":19}}
+
+2023-09-02T07:37:58.118Z
+SyntaxError: You have a syntax error at "db.dbml" line 20 column 14. Expected " ", "[", "{", comment, or whitespace but "\"" found.
+    at C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\lib\cli\utils.js:45:13
+    at Array.forEach (<anonymous>)
+    at generate (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\lib\cli\utils.js:39:14)
+    at exportHandler (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\lib\cli\export.js:28:27)
+    at Object.dbml2sql (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\lib\cli\index.js:19:23)
+    at Object.<anonymous> (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\bin\dbml2sql.js:4:19)
+    at Module._compile (node:internal/modules/cjs/loader:1256:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1310:10)
+    at Module.load (node:internal/modules/cjs/loader:1119:32)
+    at Module._load (node:internal/modules/cjs/loader:960:12)
+
+ROOT_ERROR:
+SyntaxError: Expected " ", "[", "{", comment, or whitespace but "\"" found.
+    at peg$buildStructuredError (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\node_modules\@dbml\core\lib\parse\dbmlParser.js:1090:12)
+    at Object.peg$parse [as parse] (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\node_modules\@dbml\core\lib\parse\dbmlParser.js:6903:11)
+    at Function.parseDBMLToJSON (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\node_modules\@dbml\core\lib\parse\Parser.js:43:37)
+    at Function.parse (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\node_modules\@dbml\core\lib\parse\Parser.js:67:32)
+    at Object._export [as export] (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\node_modules\@dbml\core\lib\export\index.js:11:37)
+    at C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\lib\cli\export.js:28:69
+    at C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\lib\cli\utils.js:42:23
+    at Array.forEach (<anonymous>)
+    at generate (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\lib\cli\utils.js:39:14)
+    at exportHandler (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\lib\cli\export.js:28:27)
+{"start":{"offset":363,"line":20,"column":14},"end":{"offset":364,"line":20,"column":15}}
+
+2023-09-02T07:38:54.492Z
+SyntaxError: You have a syntax error at "db.dbml" line 35 column 9. Expected " " but "\"" found.
+    at C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\lib\cli\utils.js:45:13
+    at Array.forEach (<anonymous>)
+    at generate (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\lib\cli\utils.js:39:14)
+    at exportHandler (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\lib\cli\export.js:28:27)
+    at Object.dbml2sql (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\lib\cli\index.js:19:23)
+    at Object.<anonymous> (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\bin\dbml2sql.js:4:19)
+    at Module._compile (node:internal/modules/cjs/loader:1256:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1310:10)
+    at Module.load (node:internal/modules/cjs/loader:1119:32)
+    at Module._load (node:internal/modules/cjs/loader:960:12)
+
+ROOT_ERROR:
+SyntaxError: Expected " " but "\"" found.
+    at peg$buildStructuredError (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\node_modules\@dbml\core\lib\parse\dbmlParser.js:1090:12)
+    at Object.peg$parse [as parse] (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\node_modules\@dbml\core\lib\parse\dbmlParser.js:6903:11)
+    at Function.parseDBMLToJSON (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\node_modules\@dbml\core\lib\parse\Parser.js:43:37)
+    at Function.parse (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\node_modules\@dbml\core\lib\parse\Parser.js:67:32)
+    at Object._export [as export] (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\node_modules\@dbml\core\lib\export\index.js:11:37)
+    at C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\lib\cli\export.js:28:69
+    at C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\lib\cli\utils.js:42:23
+    at Array.forEach (<anonymous>)
+    at generate (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\lib\cli\utils.js:39:14)
+    at exportHandler (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\lib\cli\export.js:28:27)
+{"start":{"offset":733,"line":35,"column":9},"end":{"offset":734,"line":35,"column":10}}
+
+2023-09-02T07:39:08.472Z
+SyntaxError: You have a syntax error at "db.dbml" line 58 column 23. Can't find field "users" in table "users"
+    at C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\lib\cli\utils.js:45:13
+    at Array.forEach (<anonymous>)
+    at generate (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\lib\cli\utils.js:39:14)
+    at exportHandler (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\lib\cli\export.js:28:27)
+    at Object.dbml2sql (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\lib\cli\index.js:19:23)
+    at Object.<anonymous> (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\bin\dbml2sql.js:4:19)
+    at Module._compile (node:internal/modules/cjs/loader:1256:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1310:10)
+    at Module.load (node:internal/modules/cjs/loader:1119:32)
+    at Module._load (node:internal/modules/cjs/loader:960:12)
+
+ROOT_ERROR:
+Error: Can't find field "users" in table "users"
+    at Endpoint.error (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\node_modules\@dbml\core\lib\model_structure\element.js:55:13)
+    at C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\node_modules\@dbml\core\lib\model_structure\endpoint.js:141:18
+    at Array.forEach (<anonymous>)
+    at Endpoint.setFields (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\node_modules\@dbml\core\lib\model_structure\endpoint.js:138:21)
+    at new Endpoint (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\node_modules\@dbml\core\lib\model_structure\endpoint.js:61:11)
+    at C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\node_modules\@dbml\core\lib\model_structure\ref.js:71:31
+    at Array.forEach (<anonymous>)
+    at Ref.processEndpoints (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\node_modules\@dbml\core\lib\model_structure\ref.js:70:20)
+    at new Ref (C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\node_modules\@dbml\core\lib\model_structure\ref.js:58:11)
+    at C:\Users\ohosseini\AppData\Roaming\npm\node_modules\@dbml\cli\node_modules\@dbml\core\lib\model_structure\database.js:133:28
+{"start":{"offset":1358,"line":58,"column":23},"end":{"offset":1372,"line":58,"column":37}}
+

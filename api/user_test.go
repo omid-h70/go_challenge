@@ -6,6 +6,7 @@ import (
 	db "go_challenge/db/sqlc"
 	"go_challenge/util"
 	"reflect"
+	"testing"
 )
 
 /*
@@ -39,4 +40,8 @@ func (e eqCreatUserParamsMatcher) String() string {
 
 func EqCreateUserParams(arg db.CreateUserParams, password string) gomock.Matcher {
 	return eqCreatUserParamsMatcher{arg, password}
+}
+
+func TestCreateUser(t *testing.T) {
+
 }

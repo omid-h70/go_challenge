@@ -10,7 +10,8 @@ INSERT INTO users (
 SELECT * FROM users WHERE user_name = $1 LIMIT 1;
 
 -- name: UpdateUser1 :one
-UPDATE users
+UPDATE
+    users
 SET
     hashed_password = $1,
     full_name = $2,
@@ -22,7 +23,8 @@ RETURNING *;
 -- @ is the same as sqlc.arg - @ used for named parameters - $ used for positional parameters
 -- @hashed_password is the one from outside - hashed_password (without @) is database field
 -- name: UpdateUser2 :one
-UPDATE users
+UPDATE
+    users
 SET
     hashed_password = CASE
         WHEN @set_hashed_password::boolean = TRUE THEN @hashed_password
@@ -41,7 +43,8 @@ WHERE
 RETURNING *;
 
 -- name: UpdateUser3 :one
-UPDATE users
+UPDATE
+    users
 SET
     hashed_password = CASE
         WHEN @set_hashed_password::boolean = TRUE THEN @hashed_password
@@ -61,12 +64,14 @@ RETURNING *;
 
 -- using nullable types
 -- name: UpdateUser :one
-UPDATE users
+UPDATE
+    users
 SET
     hashed_password = COALESCE(sqlc.narg(hashed_password), hashed_password),
     password_changed_at = COALESCE(sqlc.narg(password_changed_at), password_changed_at),
     full_name = COALESCE(sqlc.narg(full_name), full_name),
-    email = COALESCE(sqlc.narg(email), email)
+    email = COALESCE(sqlc.narg(email), email),
+    is_email_verified = COALESCE(sqlc.narg(is_email_verified), is_email_verified)
 WHERE
     user_name =  sqlc.arg(user_name)
 RETURNING *;

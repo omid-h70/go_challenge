@@ -12,6 +12,7 @@ type Store interface {
 	execTx(ctx context.Context, fn func(q *Queries) error) error
 	TransferTx(ctx context.Context, arg TransferTxParam) (TransferTxResult, error)
 	CreateUserTx(ctx context.Context, arg CreateUserTxParam) (CreateUserTxResult, error)
+	VerifyEmailTx(ctx context.Context, arg VerifyEmailTxParam) (VerifyEmailTxResult, error)
 }
 
 type SqlStore struct {

@@ -59,7 +59,7 @@
       "post": {
         "summary": "Login user",
         "description": "Use this API to login user and get access token \u0026 refresh token",
-        "operationId": "simpleBank_LoginCUser",
+        "operationId": "simpleBank_LoginUser",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -90,7 +90,7 @@
       }
     },
     "/v1/update_user": {
-      "post": {
+      "patch": {
         "summary": "update user",
         "description": "Use this API to update user, some fields are optional",
         "operationId": "simpleBank_UpdateUser",
@@ -116,6 +116,45 @@
             "schema": {
               "$ref": "#/definitions/pbUpdateUserRequest"
             }
+          }
+        ],
+        "tags": [
+          "simpleBank"
+        ]
+      }
+    },
+    "/v1/verify_email": {
+      "get": {
+        "summary": "Login user",
+        "description": "Use this API to Verify Users Email Address",
+        "operationId": "simpleBank_VerifyEmail",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbVerifyEmailResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "emailId",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "secretCode",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
@@ -235,6 +274,14 @@
         }
       },
       "title": "the end number is very important to identify the message while serialized\nusing small numbers 1 - 15 only take one bytes - so we're saving sth in between"
+    },
+    "pbVerifyEmailResponse": {
+      "type": "object",
+      "properties": {
+        "isVerified": {
+          "type": "boolean"
+        }
+      }
     },
     "protobufAny": {
       "type": "object",

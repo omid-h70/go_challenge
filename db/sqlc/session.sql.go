@@ -7,6 +7,7 @@ package db
 
 import (
 	"context"
+	"database/sql"
 	"time"
 
 	"github.com/google/uuid"
@@ -25,13 +26,13 @@ INSERT INTO sessions (
 `
 
 type CreateSessionParams struct {
-	SessionUuid  uuid.UUID `json:"session_uuid"`
-	UserName     string    `json:"user_name"`
-	UserAgent    string    `json:"user_agent"`
-	RefreshToken string    `json:"refresh_token"`
-	ClientIp     string    `json:"client_ip"`
-	IsBlocked    bool      `json:"is_blocked"`
-	ExpiresAt    time.Time `json:"expires_at"`
+	SessionUuid  uuid.UUID    `json:"session_uuid"`
+	UserName     string       `json:"user_name"`
+	UserAgent    string       `json:"user_agent"`
+	RefreshToken string       `json:"refresh_token"`
+	ClientIp     string       `json:"client_ip"`
+	IsBlocked    sql.NullBool `json:"is_blocked"`
+	ExpiresAt    time.Time    `json:"expires_at"`
 }
 
 func (q *Queries) CreateSession(ctx context.Context, arg CreateSessionParams) (Session, error) {

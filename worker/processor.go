@@ -19,9 +19,10 @@ type TaskProcessor interface {
 type RedisTaskProcessor struct {
 	server *asynq.Server
 	store  db.Store
+	mailer email.EmailSender
 }
 
-func NewRedisTaskProcessor(redisOpt asynq.RedisClientOpt, store db.Store) *RedisTaskProcessor {
+func NewRedisTaskProcessor(redisOpt asynq.RedisClientOpt, store db.Store, mailer email.EmailSender) *RedisTaskProcessor {
 	return &RedisTaskProcessor{
 		server: asynq.NewServer(redisOpt, asynq.Config{
 			Queues: map[string]int{
@@ -36,7 +37,8 @@ func NewRedisTaskProcessor(redisOpt asynq.RedisClientOpt, store db.Store) *Redis
 			}),
 			Logger: NewLogger(), //add Custom Logger
 		}),
-		store: store,
+		store:  store,
+		mailer: mailer,
 	}
 }
 

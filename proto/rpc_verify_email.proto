@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "go_challenge/pb";
+
+//the end number is very important to identify the message while serialized
+// using small numbers 1 - 15 only take one bytes - so we're saving sth in between
+message VerifyEmailRequest{
+  int64 email_id = 1;
+  string secret_code = 2;
+}
+
+message VerifyEmailResponse{
+  bool is_verified = 1;
+}

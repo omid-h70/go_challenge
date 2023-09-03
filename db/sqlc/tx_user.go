@@ -2,8 +2,8 @@ package db
 
 import "context"
 
-// CreateUserTxParam Contains input parameter for Transfer Transaction
-type CreateUserTxParam struct {
+// CreateUserTxParams Contains input parameter for Transfer Transaction
+type CreateUserTxParams struct {
 	CreateUserParams
 	AfterCreate func(user User) error
 }
@@ -16,7 +16,7 @@ type CreateUserTxResult struct {
 // we are performing outbox pattern here
 // vvvvvvvvvvvvvvoooooooooooolllllllllllllllllllaaaaaaa
 // =>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-func (store *SqlStore) CreateUserTx(ctx context.Context, arg CreateUserTxParam) (CreateUserTxResult, error) {
+func (store *SqlStore) CreateUserTx(ctx context.Context, arg CreateUserTxParams) (CreateUserTxResult, error) {
 	var result CreateUserTxResult
 
 	err := store.execTx(ctx, func(q *Queries) error {

@@ -23,6 +23,10 @@ migrate-up:
 migrate-down:
 	migrate -path db/migration --database ${DB_CONN_STRING} -verbose down
 
+# make new-migration name="add_verify_emails"
+new_migration:
+	migrate create -ext sql -dir db/migration -seq $(name)
+
 #docker run --rm -v "%cd%:/src" -w /src kjconroy/sqlc generate is Windows Specific Command
 #$(CURDIR) is gnu makefile variable and works every where (?)
 sqlc:
@@ -34,7 +38,13 @@ db_docs:
 
 #Convert dbml file to postgres sql
 db_schema:
-	dbml2sql --postgres -o doc/schema.sql doc/db.dbml
+	dbml2sql --postgres -o db/doc/schema.sql db/doc/db.dbml
+
+# Create MockDb
+# Store, TaskDistributor are interfaces
+mock:
+	mockgen -package mockdb -destination db/mock/store.go go_challenge/db/sqlc Store
+	mockgen -package mockwr -destination worker/mock/distributor.go go_challenge/worker TaskDistributor
 
 # rm -f pb/*.go
 # swagger creates documentation for u, that machines understand and can share
@@ -74,8 +84,11 @@ clean-build:
 server:
 	go run main.go
 
+test-short:
+	go test -v -cover -short ./...
+
 test:
-	go test -v ./...
+	go test -v -cover  ./...
 
 # meaning that the target name , doesn't represent  an existing file
 

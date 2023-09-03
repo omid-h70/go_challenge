@@ -17,6 +17,7 @@ type Querier interface {
 	CreateSession(ctx context.Context, arg CreateSessionParams) (Session, error)
 	CreateTransfer(ctx context.Context, arg CreateTransferParams) (Transfer, error)
 	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
+	CreateVerifyEmail(ctx context.Context, arg CreateVerifyEmailParams) (VerifyEmail, error)
 	DeleteAccount(ctx context.Context, accountID int64) error
 	GetAccount(ctx context.Context, accountID int64) (Account, error)
 	GetAccountForUpdate(ctx context.Context, accountID int64) (Account, error)
@@ -36,6 +37,7 @@ type Querier interface {
 	// @hashed_password is the one from outside - hashed_password (without @) is database field
 	UpdateUser2(ctx context.Context, arg UpdateUser2Params) (User, error)
 	UpdateUser3(ctx context.Context, arg UpdateUser3Params) (User, error)
+	UpdateVerifyEmail(ctx context.Context, arg UpdateVerifyEmailParams) (VerifyEmail, error)
 }
 
 var _ Querier = (*Queries)(nil)
