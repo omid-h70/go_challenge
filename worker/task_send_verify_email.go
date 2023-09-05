@@ -51,7 +51,7 @@ func (p *RedisTaskProcessor) ProcessTaskSendVerifyEmail(ctx context.Context, tsk
 		return fmt.Errorf("failed to get user %w", err)
 	}
 
-	verifyEmail, err := p.Store.CreateVerifyEmail(ctx, db.CreateVerifyEmailParams{
+	verifyEmail, err := p.store.CreateVerifyEmail(ctx, db.CreateVerifyEmailParams{
 		Username:   user.UserName,
 		Email:      user.Email,
 		SecretCode: util.RandomString(32),
@@ -62,12 +62,13 @@ func (p *RedisTaskProcessor) ProcessTaskSendVerifyEmail(ctx context.Context, tsk
 	}
 
 	subject := "welcome to simple bank"
+	to := []string{""}
 	verifyUrl := fmt.Sprintf("http://simple-bank.org?id=%d&secred_code=%s", verifyEmail.ID, verifyEmail.SecretCode)
 	content := fmt.Sprintf(`
 	<h1> wola wola </h1> 
 	<a href="%s"> </a>
 	`, verifyUrl)
-	err := p.mailer.SendEmail(subject, content, to, nil, nil, nil)
+	err = p.mailer.SendEmail(subject, content, to, nil, nil, nil)
 	if err != nil {
 		return fmt.Errorf("failed to send verify email %w", err)
 	}

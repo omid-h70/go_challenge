@@ -5,6 +5,7 @@ import (
 	"github.com/hibiken/asynq"
 	zlog "github.com/rs/zerolog/log"
 	db "go_challenge/db/sqlc"
+	"go_challenge/mail"
 )
 
 const (
@@ -19,10 +20,10 @@ type TaskProcessor interface {
 type RedisTaskProcessor struct {
 	server *asynq.Server
 	store  db.Store
-	mailer email.EmailSender
+	mailer mail.EmailSender
 }
 
-func NewRedisTaskProcessor(redisOpt asynq.RedisClientOpt, store db.Store, mailer email.EmailSender) *RedisTaskProcessor {
+func NewRedisTaskProcessor(redisOpt asynq.RedisClientOpt, store db.Store, mailer mail.EmailSender) *RedisTaskProcessor {
 	return &RedisTaskProcessor{
 		server: asynq.NewServer(redisOpt, asynq.Config{
 			Queues: map[string]int{

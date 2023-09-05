@@ -1,6 +1,11 @@
 package mail
 
-import _ "github.com/jordan-wright/email"
+import (
+	"fmt"
+	"github.com/jordan-wright/email"
+	_ "github.com/jordan-wright/email"
+	"net/smtp"
+)
 
 const (
 	smtpAuthAddress   = "smtp.gmail.com"
@@ -28,7 +33,7 @@ func NewGmailSender(name, fromEmailAddr, fromEmailPass string) EmailSender {
 func (sender *GmailSender) SendEmail(subject, content string, cc, to, bcc, attachedFiles []string) error {
 	e := email.NewEmail()
 	e.From = fmt.Sprintf("%s <%s>", sender.name, sender.fromEmailAddr)
-	e.Subject := subject
+	e.Subject = subject
 	e.HTML = []byte(content)
 	e.To = to
 	e.Cc = cc
@@ -40,8 +45,8 @@ func (sender *GmailSender) SendEmail(subject, content string, cc, to, bcc, attac
 			return fmt.Errorf("failed to attach file %s: %w", f, err)
 		}
 	}
-	smtpAuth := smtp.PlainAuth("", sender.fromEmailAddr, sender.fromEmailPass)
-	e.Send(smtpServerAddress, smtpAuthAddress)
+	smtpAuth := smtp.PlainAuth("", sender.fromEmailAddr, sender.fromEmailPass, smtpAuthAddress)
+	e.Send(smtpServerAddress, smtpAuth)
 
 	return nil
 }
