@@ -2,6 +2,8 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	db "go_challenge/db/sqlc"
+	"go_challenge/token"
 	"net/http"
 )
 
@@ -33,22 +35,29 @@ func (server *Server) createAccount(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, account)
 	*/
 
-	/* v2
+	/* v2 -------------------------- */
 
 	authPayLoad := ctx.MustGet(authorizationPayloadKey).(*token.Payload)
 	arg := db.CreateAccountParams{
-		Owner: authPayLoad.Username,
+		Owner:    authPayLoad.Username,
 		Currency: createAccountReq.Currency,
-		Balance: 0,
+		Balance:  0,
 	}
 
 	account, err := server.store.CreateAccount(ctx, arg)
 	if err != nil {
+		/*
+			errCode := db.Error(err)
+			if errCode == db.ForeignKeyViolation || errCode == db.UniqueViolation {
+				ctx.JSON(http.StatusForbidden, errorResponse(err))
+				return
+			}
+		*/
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 		return
 	}
 	ctx.JSON(http.StatusOK, account)
-	*/
+	/* v2 -------------------------- */
 }
 
 type getAccountRequest struct {

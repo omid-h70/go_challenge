@@ -16,5 +16,7 @@ COPY db/migration ./migaration
 
 #its just for info, not actually exposing a port !
 EXPOSE 8080
+# when we use cmd instruction before entry point its like doing
+# ENTRYPOINT["/app.start.sh", "app/main"]
 CMD ["app/main"]
 ENTRYPOINT["/app.start.sh"]

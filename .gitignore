@@ -1,6 +1,8 @@
 ### remove cache data
 ## win git rm . -r --cached
 ## other git rm  -r --cached
+## git checkout . -> revert changes
+## git checkout -b ft/secret_manager -> to create new branch
 .idea/
 .env
 tmp*

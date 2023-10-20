@@ -43,7 +43,7 @@ func (s *Server) CreateUser(ctx context.Context, req *pb.CreateUserRequest) (*pb
 	// retry mechaniem in queue will always help you !
 	// also consider some delay !
 
-	txArgs := db.CreateUserTxParam{
+	txArgs := db.CreateUserTxParams{
 		CreateUserParams: arg,
 		AfterCreate: func(user db.User) error {
 			tskPayLoad := &worker.PayLoadSendVerifyEmail{

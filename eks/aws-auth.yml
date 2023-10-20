@@ -1,0 +1,20 @@
+####
+# ConfigMaps are key-value pairs of data that allow applications in Kubernetes
+# to consume constants in the code. By storing configuration values in
+# Kubernetes environments, ConfigMaps facilitate the config factor in the
+# 12 Factor-App methodology, a set of best practices for building portable and
+# resilient web applications known as the 12 Factor-App methodology.
+#
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: aws-auth
+  namespace: kube-system
+data:
+  mapUsers: |
+### put your arn name here
+    - userarn: arn:aws:iam::095420225348:user/github-ci
+      username: github-ci
+      groups:
+        - system:masters

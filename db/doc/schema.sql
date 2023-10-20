@@ -12,15 +12,15 @@ CREATE TABLE "accounts" (
 
 CREATE TABLE "entries" (
   "entry_id" BIGSERIAL PRIMARY KEY,
-  "account_id" BIGSERIAL,
+  "account_id" BIGSERIAL NOT NULL,
   "amount" bigint NOT NULL,
   "created_at" timestamptz DEFAULT (now())
 );
 
 CREATE TABLE "transfers" (
   "transfer_id" bigint PRIMARY KEY,
-  "from_account_id" BIGSERIAL,
-  "to_account_id" BIGSERIAL,
+  "from_account_id" BIGSERIAL NOT NULL,
+  "to_account_id" BIGSERIAL NOT NULL,
   "amount" bigint NOT NULL,
   "created_at" timestamptz DEFAULT (now())
 );
@@ -33,7 +33,7 @@ CREATE TABLE "users" (
   "email" varchar NOT NULL,
   "is_email_verified" bool NOT NULL DEFAULT false,
   "password_changed_at" timestamptz NOT NULL DEFAULT ('0001-01-01 00:00:00Z'),
-  "created_at" timestamptz DEFAULT (now())
+  "created_at" timestamptz NOT NULL DEFAULT (now())
 );
 
 CREATE TABLE "verify_emails" (
@@ -52,7 +52,7 @@ CREATE TABLE "sessions" (
   "user_agent" varchar NOT NULL,
   "refresh_token" varchar NOT NULL,
   "client_ip" varchar NOT NULL,
-  "is_blocked" boolean DEFAULT (false),
+  "is_blocked" boolean NOT NULL DEFAULT (false),
   "expires_at" timestamptz NOT NULL,
   "created_at" timestamptz DEFAULT (now())
 );

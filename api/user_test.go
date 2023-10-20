@@ -3,6 +3,7 @@ package api
 import (
 	"fmt"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 	db "go_challenge/db/sqlc"
 	"go_challenge/util"
 	"reflect"
@@ -35,7 +36,7 @@ func (e eqCreatUserParamsMatcher) Matches(x any) bool {
 }
 
 func (e eqCreatUserParamsMatcher) String() string {
-	return fmt.Sprintf("is equal to %w", e.password)
+	return fmt.Sprintf("is equal to %s", e.password)
 }
 
 func EqCreateUserParams(arg db.CreateUserParams, password string) gomock.Matcher {
@@ -44,4 +45,18 @@ func EqCreateUserParams(arg db.CreateUserParams, password string) gomock.Matcher
 
 func TestCreateUser(t *testing.T) {
 
+}
+
+func randomUser(t *testing.T) (user db.User, password string) {
+	password = util.RandomString(6)
+	hashedPassword, err := util.GetHashedPassword(password)
+	require.NoError(t, err)
+
+	user = db.User{
+		UserName:       util.RandomOwner(),
+		HashedPassword: hashedPassword,
+		FullName:       util.RandomOwner(),
+		Email:          util.RandomEmail(),
+	}
+	return
 }

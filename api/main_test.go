@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-func newTestServer(t *testing.T, store *db.Store) *Server {
+func newTestServer(t *testing.T, store db.Store) *Server {
 
 	cfg := util.Config{
 		TokenSymmetricKey:   util.RandomString(32),

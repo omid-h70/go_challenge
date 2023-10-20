@@ -11,6 +11,7 @@ import (
 	"go_challenge/api"
 	db "go_challenge/db/sqlc"
 	"go_challenge/gapi"
+	"go_challenge/mail"
 	"go_challenge/pb"
 	"go_challenge/util"
 	"go_challenge/worker"
@@ -73,15 +74,16 @@ func main() {
 			Addr: config.RedisAddr,
 		}
 		tskDistributor := worker.NewRedisTaskDistributor(redisOpt)
+		gmail := mail.NewGmailSender("", "", "")
 
 		runGrpcServer(config, store, tskDistributor)
 		go runGatewayServer(config, store, tskDistributor)
-		go runTaskProcessor(redisOpt, store)
+		go runTaskProcessor(redisOpt, store, gmail)
 	}
 }
 
-func runTaskProcessor(redisOpt asynq.RedisClientOpt, store db.Store) {
-	taskProcessor := worker.NewRedisTaskProcessor(redisOpt, store)
+func runTaskProcessor(redisOpt asynq.RedisClientOpt, store db.Store, mailer mail.EmailSender) {
+	taskProcessor := worker.NewRedisTaskProcessor(redisOpt, store, mailer)
 	zlog.Info().Msg("start task processor")
 	if err := taskProcessor.Start(); err != nil {
 		zlog.Fatal().Err(err).Msg("failed to start processing redis tasks")

@@ -3,16 +3,23 @@ package api
 import (
 	"bytes"
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
+	mockdb "go_challenge/db/mock"
 	db "go_challenge/db/sqlc"
+	"go_challenge/util"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 )
 
-func TestGetAccountApi1(t *testing.T) {
+func TestGetAccountApi(t *testing.T) {
+
+	user, _ := randomUser(t)
+	account := randomAccount(user.UserName)
 
 	//defining a nameless struct and filling it !
 	testCases := []struct {
@@ -23,24 +30,24 @@ func TestGetAccountApi1(t *testing.T) {
 	}{
 		{
 			name:      "OK",
-			accountID: account.ID,
-			buildStubs: func(store *mockdb.Mockstore) {
+			accountID: account.AccountID,
+			buildStubs: func(store *mockdb.MockStore) {
 				store.EXPECT().
-					GetAccount(gomock.Any(), gomock.Eq(account.ID)).
+					GetAccount(gomock.Any(), gomock.Eq(account.AccountID)).
 					Times(1).
 					Return(account, nil)
 			},
 			checkResponse: func(t *testing.T, recorder *httptest.ResponseRecorder) {
-				require.Equal(t, http.StatusOk, recorder.Code)
+				require.Equal(t, http.StatusOK, recorder.Code)
 				requireBodyMatchAccount(t, recorder.Body, account)
 			},
 		},
 		{
 			name:      "NotFound",
-			accountID: account.ID,
-			buildStubs: func(store *mockdb.Mockstore) {
+			accountID: account.AccountID,
+			buildStubs: func(store *mockdb.MockStore) {
 				store.EXPECT().
-					GetAccount(gomock.Any(), gomock.Eq(account.ID)).
+					GetAccount(gomock.Any(), gomock.Eq(account.AccountID)).
 					Times(1).
 					Return(db.Account{}, sql.ErrNoRows)
 			},
@@ -50,10 +57,9 @@ func TestGetAccountApi1(t *testing.T) {
 		},
 	}
 
-	for i:= range testCases{
-		tc := testCases[i]
+	for _, tc := range testCases {
 
-		t.Run(tc.name, func(t *testing.T){
+		t.Run(tc.name, func(t *testing.T) {
 			ctrl := gomock.NewController(t)
 			defer ctrl.Finish()
 
@@ -61,19 +67,19 @@ func TestGetAccountApi1(t *testing.T) {
 			tc.buildStubs(store)
 
 			//start test server and send request
-			server := NewServer(store)
+			server := newTestServer(t, store)
 			recorder := httptest.NewRecorder()
 
-			url := fmt.Sprintf("/accounts/%d". account.ID)
+			url := fmt.Sprintf("/accounts/%d", tc.accountID)
 			request, err := http.NewRequest(http.MethodGet, url, nil)
 			require.NoError(t, err)
 
 			server.router.ServeHTTP(recorder, request)
-		}}
+		})
 	}
 }
 
-func TestGetAccountApi(t *testing.T) {
+func TestCreateAccountApi(t *testing.T) {
 
 	//GET IT FROM GIT !!!!
 
@@ -106,25 +112,36 @@ func TestGetAccountApi(t *testing.T) {
 	*/
 }
 
-func randomAccount() /*db.Account*/ {
-	/*
-		return db.Account{
-		ID: util.RandomInt(1, 1000),
-		Owner: util.RandomOwner(),
-		Balance: util.RandomMoney(),
-		Currency: util.RandomCurrency(),
-		}
-	*/
+func TestListAccountsApi(t *testing.T) {
+
 }
 
-func requireBodyMatchAccount(t *testing.T, body *bytes.Buffer) {
-	//data, err := io.ReadAll(body)
-	//require.NoError(t, err)
+func randomAccount(owner string) db.Account {
 
-	/*
-		var getAccount, db.Account
-		err = json.Unmarshal(data, &gotAccount)
-		require.NoError(t, err)
-		require.Equal(t, account, gotAccount)
-	*/
+	return db.Account{
+		AccountID: util.RandomInt(1, 1000),
+		Owner:     owner,
+		Balance:   util.RandomMoney(),
+		Currency:  util.RandomCurrency(),
+	}
+}
+
+func requireBodyMatchAccount(t *testing.T, body *bytes.Buffer, account db.Account) {
+	data, err := io.ReadAll(body)
+	require.NoError(t, err)
+
+	var gotAccount db.Account
+	err = json.Unmarshal(data, &gotAccount)
+	require.NoError(t, err)
+	require.Equal(t, account, gotAccount)
+}
+
+func requireBodyMatchAccounts(t *testing.T, body *bytes.Buffer, account []db.Account) {
+	data, err := io.ReadAll(body)
+	require.NoError(t, err)
+
+	var gotAccounts db.Account
+	err = json.Unmarshal(data, &gotAccounts)
+	require.NoError(t, err)
+	require.Equal(t, account, gotAccounts)
 }

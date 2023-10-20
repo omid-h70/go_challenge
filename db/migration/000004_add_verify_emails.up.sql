@@ -3,7 +3,7 @@ CREATE TABLE "verify_emails" (
  "username" varchar NOT NULL,
  "email" varchar NOT NULL,
  "secret_code" varchar NOT NULL,
- "is_used" bool NOT NULL DEFAULT (now()),
+ "is_used" bool NOT NULL DEFAULT (false),
  "created_at" timestamptz NOT NULL DEFAULT (now()),
  "expired_at" timestamptz NOT NULL DEFAULT (now() + INTERVAL '15 minutes')
 );

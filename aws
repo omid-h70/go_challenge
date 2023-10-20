@@ -1,0 +1,41 @@
+//To get secrets value by arn
+aws secretsmanager get-secret-value --secret-id arn:aws:secretsmanager:us-east-2:777907151835:secret:AppK8s-tUHEcy --region us-east-2
+//
+${ABOVE_CMD} --query SecretString --output text
+//Convert json to ENV File
+${ABOVE_CMD} | jq -r 'to_entries|map("\(.key)=\(.value)")|.[]'
+//Overwrite to Env File
+${ABOVE_CMD} | jq -r 'to_entries|map("\(.key)=\(.value)")|.[]' > app.env
+//Login to aws container registry
+aws ecr get-login-password | docker login --username AWS --password-stdin ${AWS_IMAGE_URL}
+//to get Cluster Config for kubectl
+aws eks update-kubeconfig --name simple-bank --region us-east-2
+------------------------------------------------------------------------------------------
+/*
+A Kubernetes context is a group of access parameters that define which cluster
+you're interacting with, which user you're using, and which namespace you're working in.
+It's helpful if you need to access different clusters for different purposes or if you
+want to limit your access to certain parts of a cluster
+*/
+
+//switch context in kubectl
+cat ~/.kube/config
+kubectl config use-context ${its_located_in_above_config}
+//---------------------------------------------------------------
+//1. First Apply Your Deployment
+kubectl apply -f eks/deployment.yml
+> now you can see in k9s
+//2.Apply Service yml as well
+kubectl apply -f eks/service.yml
+
+3. Kubernetes ingress is a collection of rules, not a service.
+Ingress allows access to your Kubernetes services from outside the Kubernetes cluster.
+There are different kubernetes aka K8 resources alternatively you can use like (Node Port / Loadbalancer)
+which you can use to expose.
+
+Ingress is independent resource to your service ,
+you can specify routing rules declaratively,
+so each url with some context can be mapped to
+different services. This makes it decoupled and
+isolated from the services you want to expose.
+kubectl apply -f eks/ingress.yml

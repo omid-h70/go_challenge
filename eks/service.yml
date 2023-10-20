@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: simple-bank-api-service
+spec:
+# selector is basically key value pairs
+# based on selectors it knows, to which pods it must route the traffic
+  selector:
+    app: simple-bank-api
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+# if you don't specify its type by default its ClusterIP ( ClusterIP doesn't have External IP)
+# but load balancer does
+# type: LoadBalancer
+# we comment it out to use ingress instead >>>>>>>>>

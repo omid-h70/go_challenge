@@ -1,0 +1,28 @@
+apiVersion: app/v1
+kind: Deployment
+metadata:
+  name: simple-bank-api-deployment
+  labels:
+    app: simple-bank-api
+  spec:
+    replicas: 1
+# it's a rule that defines how the deployment can find which pods to manage
+# now we use matchLabels rule with "simple-bank-api" name
+# by this deployment
+    selector:
+      matchLabels:
+        app: simple-bank-api
+    template:
+      metadata:
+        labels:
+          app: simple-bank-app
+      spec:
+        containers:
+          - name: simple-bank-api
+# url from amazon ecr
+            image:
+# telling about ports here is optional, but helps other people to understand better how
+# hou deployment work
+            ports:
+              - containerPort: 8080
+

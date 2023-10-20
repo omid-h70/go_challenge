@@ -1,6 +1,9 @@
 DB_NAME=simple_bank
 DB_CONTAINER_NAME=postgres14-db
-DB_CONN_STRING="postgres://root:secret@localhost:5432/simple_bank?sslmode=disable"
+DB_CONN_STRING="postgres://root:secret@localhost:5432/simple-bank?sslmode=disable"
+#AWS_DB_CONN_STRING="postgres://root:a}1K&{LuGe}jw*BCasFdhxp83y7f@simple-bank.c1lri2mnc8os.us-east-2.rds.amazonaws.com:5432/awsdude"
+#AWS_DB_CONN_STRING="postgres%3A%2F%2Froot%3Aawsdude%23123456%40simple-bank.c1lri2mnc8os.us-east-2.rds.amazonaws.com%3A5432%2Fawsdude"
+AWS_DB_CONN_STRING="postgres://root:a%7D1K%26%7BLuGe%7Djw%2ABCasFdhxp83y7f@simple-bank.c1lri2mnc8os.us-east-2.rds.amazonaws.com:5432/awsdude"
 
 docker-clean:
 	docker rm ${DB_CONTAINER_NAME}
@@ -19,6 +22,9 @@ drop-db:
 
 migrate-up:
 	migrate -path db/migration --database ${DB_CONN_STRING} -verbose up
+
+aws-migrate-up:
+	migrate -path "./db/migration" -database ${AWS_DB_CONN_STRING} -verbose up
 
 migrate-down:
 	migrate -path db/migration --database ${DB_CONN_STRING} -verbose down
